@@ -154,9 +154,9 @@ KW,kiln_watch_0,0,24
 
 The broadcast data is comma delimited with each position containing:
 
-| Position | Description                                                    |
-| :------: | -------------------------------------------------------------- |
-|    0     | Always KW to identify the packet as a kiln-watch packet        |
-|    1     | The device_name as specified in the [udp_listen.py](udp_listen.py) file.  |
-|    2     | The device_index as specified in the [udp_listen.py](udp_listen.py) file. |
-|    3     | The measured temperature in Celcius.                           |
+| Position | Description                                                                   |
+| :------: | ----------------------------------------------------------------------------- |
+|    0     | Always KW to identify the packet as a kiln-watch packet                       |
+|    1     | The device_name as specified in the [kiln-watch.yaml](kiln-watch.yaml) file.  |
+|    2     | The device_index as specified in the [kiln-watch.yaml](kiln-watch.yaml) file. |
+|    3     | The measured temperature in Celcius.                                          |
