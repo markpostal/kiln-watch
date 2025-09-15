@@ -39,11 +39,11 @@ Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant
 
 ### ESP32 Pinout
 
-![[ESP32_pinout.jpg]]
+![[images/ESP32_pinout.jpg]]
 
 ### MAX31856 Pinout
 
-![[MAX31856_pinout.jpg]]
+![[images/MAX31856_pinout.jpg]]
 
 ### Wiring Instructions
 
@@ -63,7 +63,7 @@ Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant
 
 ### Wiring completed
 
-![[wired_up.jpg]]
+![[images/wired_up.jpg]]
 
 ### Install firmware
 
