@@ -100,7 +100,7 @@ Install ESPHome:
 % pip3 install esphome
 ```
 
-Edit the configuration file, [[kiln-watch.yaml]].
+Edit the configuration file, [kiln-watch.yaml](kiln-watch.yaml).
 
 Specifically, edit the substitutions section:
 
@@ -128,7 +128,7 @@ Compile and flash the firmware to the ESP32 device:
 
 ### Test the firmware installation
 
-At this point the ESP32 should be broadcasting messages every 10 seconds onto the local network over WiFi.  We can check this using the [[udp_listen.py]] script.  However, first we must check the status of the firewall on the local system.
+At this point the ESP32 should be broadcasting messages every 10 seconds onto the local network over WiFi.  We can check this using the [udp_listen.py](udp_listen.py) script.  However, first we must check the status of the firewall on the local system.
 
 Determine if the firewall is enabled:
 
@@ -142,7 +142,7 @@ If the firewall is **active**, we must create a rule to allow it to pass through
 % sudo ufw allow 23464/udp 
 ```
 
-Now, run the [[udp_listen.py]] script and wait for updates about every 10 seconds:
+Now, run the [udp_listen.py](udp_listen.py) script and wait for updates about every 10 seconds:
 
 ```
 % python3 udp_listen.py 
@@ -157,6 +157,6 @@ The broadcast data is comma delimited with each position containing:
 | Position | Description                                                    |
 | :------: | -------------------------------------------------------------- |
 |    0     | Always KW to identify the packet as a kiln-watch packet        |
-|    1     | The device_name as specified in the [[kiln-watch.yaml]] file.  |
-|    2     | The device_index as specified in the [[kiln-watch.yaml]] file. |
+|    1     | The device_name as specified in the [udp_listen.py](udp_listen.py) file.  |
+|    2     | The device_index as specified in the [udp_listen.py](udp_listen.py) file. |
 |    3     | The measured temperature in Celcius.                           |
