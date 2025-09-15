@@ -1,9 +1,8 @@
 substitutions:
   device_index: "0" # The device index, used to differentiate between devices
   device_name: "kiln_watch_${device_index}"
-  uom: "°F" # °C or °F
-  ssid: "......"
-  wifi_passwd: "......"
+  ssid: "....."
+  wifi_passwd: "....."
 
 esphome:
   name: "${device_name}"
@@ -39,7 +38,6 @@ sensor:
     name: Kiln Temperature
     icon: mdi:FireCircle
     cs_pin: GPIO22
-    unit_of_measurement: "${uom}"
     update_interval: 10s
     on_value:
       then:
