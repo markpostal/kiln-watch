@@ -160,3 +160,46 @@ The broadcast data is comma delimited with each position containing:
 |    1     | The device_name as specified in the [kiln-watch.yaml](kiln-watch.yaml) file.  |
 |    2     | The device_index as specified in the [kiln-watch.yaml](kiln-watch.yaml) file. |
 |    3     | The measured temperature in Celcius.                                          |
+
+## Service
+
+The Kiln Watch Service is implemented as a web app that listens for sensor reports and web requests.  The service is implemented in python.
+
+### Prerequisites
+
+The Kiln Watch Service is built using [Python Poetry](https://python-poetry.org/). Please see the [docs](https://python-poetry.org/docs/) for the installation procedures.
+
+### Run the Service
+
+By default the service listens on port 4000.  If your firewall is up, add a rule to allow access to port 4000.
+
+```bash
+% sudo ufw allow 4000/tcp
+```
+
+
+```bash
+% python poetry kwserv
+
+ * Serving Flask app 'kiln_watch_service.Service'
+ * Debug mode: off
+INFO:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:4000
+ * Running on http://192.168.1.194:4000
+ * 
+```
+
+### View the application
+
+When the service runs, it lists the URLs on which the application is available.   Open one of these URLs with a web browser to reveal the application.
+
+The application contains a single page with the following three sections:
+
+![](images/latest.png)
+
+![](images/temperature.png)
+
+![](images/rate_of_change.png)
+
+All sections are updated every 60 seconds with the line graphs proceeding left-to right.

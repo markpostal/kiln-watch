@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "kiln-watch-service"
+version = "0.2.0"
+description = "Kiln Watch Service"
+license = "MIT"
+authors = ["Mark Postal <mark.postal@gmail.com>"]
+packages = [{include = "kiln_watch_service"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+kwserv = "kiln_watch_service.Main:command_line_interface"
