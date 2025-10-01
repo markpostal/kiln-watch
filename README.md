@@ -194,6 +194,10 @@ INFO:WARNING: This is a development server. Do not use it in a production deploy
 
 When the service runs, it lists the URLs on which the application is available.   Open one of these URLs with a web browser to reveal the application.
 
+```bash
+% firefox http://192.168.1.194:4000
+```
+
 The application contains a single page with the following three sections:
 
 ![](images/latest.png)
