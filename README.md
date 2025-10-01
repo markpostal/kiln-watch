@@ -20,7 +20,7 @@ Monitor a gas fired kiln at multiple kiln positions to better assess the progres
 
 ## Constraints
 
-1. The project members each have differing levels of skills, yet the solution must at lest be maintainable by the least capable team member.  As such, simplicity and re-use of existing capabilities are of utmost importance.
+- The project members each have differing levels of skills, yet the solution must at lest be maintainable by the least capable team member.  As such, simplicity and re-use of existing capabilities are of utmost importance.
 ## Sensor
 
 The sensor is be constructed as per the [ESPHome](https://esphome.io) instructions:
