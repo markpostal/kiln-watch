@@ -50,7 +50,7 @@ Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant
 |    ESP32 Pin    | Description                                | MAX31856 Pin |
 | :-------------: | ------------------------------------------ | :----------: |
 |       VIN       | Input voltage                              |     VIN      |
-|       N/A       | Not used                                   |     3vo      |
+|       N/A       | Not used                                   |     3Vo      |
 |       GND       | Ground                                     |     GND      |
 | D18 (VPSI SCK)  | connects to the SPI **clk_pin**            |     SCK      |
 | D19 (VSPI MISO) | connects to the SPI **miso_pin**           |     SDO      |
@@ -65,6 +65,11 @@ Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant
 
 ![](images/wired_up.jpg)
 
+For the final configuration the breakout boards were mounted on a piece of protoboard and wire wrapped.
+
+![Protoboard](images/proto_board.jpg)
+
+![Wire Wrap](images/wire_wrap.jpg)
 ### Install firmware
 
 The firmware for the ESP32 device will be created using [ESPHome](https://esphome.io/) and flashed to the device over USB.  So, first install ESPHome as follows.

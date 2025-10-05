@@ -15,6 +15,9 @@ uninstall:
 	ls -la dist/$(MODULE)-$(VERSION)*-py3-none-any.whl
 	pip3 uninstall -y dist/$(MODULE)-$(VERSION)*-py3-none-any.whl
 
+run:
+	poetry run --debug
+
 clean:
 	-rm -rf dist > /dev/null 2>&1
 	-rm -rf $(MODULE)/__pycache__ > /dev/null 2>&1
