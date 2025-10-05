@@ -179,7 +179,7 @@ By default the service listens on port 4000.  If your firewall is up, add a rule
 
 
 ```bash
-% python poetry kwserv
+% poetry run kwserv
 
  * Serving Flask app 'kiln_watch_service.Service'
  * Debug mode: off
