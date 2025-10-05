@@ -206,4 +206,4 @@ The application contains a single page with the following three sections:
 
 ![](images/rate_of_change.png)
 
-All sections are updated every 60 seconds with the line graphs proceeding left-to right.
+All sections are updated every 60 seconds with the line graphs proceeding right to left.
