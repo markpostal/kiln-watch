@@ -1,8 +1,8 @@
 substitutions:
   device_index: "0" # The device index, used to differentiate between devices
   device_name: "kiln_watch_${device_index}"
-  ssid: "....."
-  wifi_passwd: "....."
+  ssid: "your_ssid_here"
+  wifi_passwd: "wifi_password_here!"
 
 esphome:
   name: "${device_name}"

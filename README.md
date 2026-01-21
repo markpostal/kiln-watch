@@ -166,6 +166,38 @@ The broadcast data is comma delimited with each position containing:
 |    2     | The device_index as specified in the [kiln-watch.yaml](kiln-watch.yaml) file. |
 |    3     | The measured temperature in Celcius.                                          |
 
+## Service2
+
+The Kiln Watch Services runs on another ESP32 board, listens for client broadcasts, then presents a web site that presents the status of all clients.
+
+This service has the following software requirements:
+
+- [MicroPython](https://micropython.org/)
+- [esptool](https://docs.espressif.com/projects/esptool/en/latest/esp32/installation.html)
+- [pyboard-rshell](https://github.com/dhylands/rshell)
+- [Microdot](https://microdot.readthedocs.io/en/latest/)
+
+Install esptool:
+
+~~~bash
+% pip install esptool
+~~~
+
+Install rshell:
+
+~~~bash
+% sudo apt install pyboard-rshell
+~~~
+
+Download  the [MicroPython firmware](https://micropython.org/download/ESP32_GENERIC/)
+
+Install the firmware:
+
+~~~bash
+% esptool -p /dev/ttyUSB0 erase_flash
+% esptool -b 115200 -p /dev/ttyUSB0 -c esp32 write-flash 0x1000 ESP32_GENERIC-20251209-v1.27.0.bin
+~~~
+
 ## Service
 
 The Kiln Watch Service is implemented as a web app that listens for sensor reports and web requests.  The service is implemented in python.
