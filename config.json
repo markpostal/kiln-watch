@@ -2,6 +2,6 @@
 	"http_port" : 80,
 	"udp_port" : 23464,
 	"ssid" : "your_ssid_here",
-	"wifi_password" : "wifi_password_here",
+	"wifi_password" : "your_wifi_password_here",
 	"hostname" : "kiln-watch-service"
 }
