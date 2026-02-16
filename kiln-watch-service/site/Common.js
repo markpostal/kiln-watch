@@ -1,11 +1,11 @@
 const STROKE = [
-    "blue",
-    "firebrick",
     "green",
+    "red"
+    "blue",
     "mediumvioletred",
     "olivedrab",
     "steelblue",
-    "red"
+    "firebrick",
 ];
 
 const DASH = [

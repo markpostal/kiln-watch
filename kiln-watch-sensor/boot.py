@@ -13,7 +13,10 @@ micropython.mem_info()
 with open('config.json') as f:
 	CONFIG = json.load(f)
 
-port = CONFIG['udp_port']
+port = CONFIG['udp_port'] if 'udp_port' in CONFIG else 23464
+name = CONFIG['name'] if 'name' in CONFIG else 'kiln_watch'
+index = CONFIG['index'] if 'index' in CONFIG else '0'
+print(index)
 
 csPin = 22
 misoPin = 19
@@ -38,7 +41,7 @@ except OSError as e:
 
 while True:
     temp = sensor.readThermocoupleTemp()
-    report = f"KW,kiln_watch_0,0,{int(temp)}"
+    report = f"KW,{name}_{index},{index},{int(temp)}"
     print(f"Outgoing report: {report}")
     sock.sendto(report, ("255.255.255.255", port))
     time.sleep(10)

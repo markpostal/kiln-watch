@@ -17,8 +17,8 @@ HEAPSIZE=2097152
 #HEAPSIZE=262144
 
 #CONFIG=../config.json
-CONFIG=../config.json-mark
-#CONFIG=../config.json-jim
+#CONFIG=../old/config.json-mark
+CONFIG=../old/config.json-jim-red
 
 MICRODOT=https://raw.githubusercontent.com/miguelgrinberg/microdot/refs/heads/main/src/microdot/microdot.py
 
