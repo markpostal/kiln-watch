@@ -16,13 +16,17 @@ with open('config.json') as f:
 port = CONFIG['udp_port'] if 'udp_port' in CONFIG else 23464
 name = CONFIG['name'] if 'name' in CONFIG else 'kiln_watch'
 index = CONFIG['index'] if 'index' in CONFIG else '0'
+hostname = "255.255.255.255" # CONFIG['hostname'] if 'hostname' in CONFIG else '255.255.255.255'
 print(index)
+
+# Reformat to local address
+if hostname[0].isalpha() and not hostname.endswith(".local"):
+	hostname = f"{hostname}.local"
 
 csPin = 22
 misoPin = 19
 mosiPin = 23
 clkPin = 18
-
 
 sensor = max31856.max31856(csPin, misoPin, mosiPin, clkPin)
 
@@ -42,6 +46,8 @@ except OSError as e:
 while True:
     temp = sensor.readThermocoupleTemp()
     report = f"KW,{name}_{index},{index},{int(temp)}"
-    print(f"Outgoing report: {report}")
-    sock.sendto(report, ("255.255.255.255", port))
+    print(f"Outgoing report to {hostname}: {report}")
+    sock.sendto(report, (hostname, port))
     time.sleep(10)
+
+

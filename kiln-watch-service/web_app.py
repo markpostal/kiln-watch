@@ -5,7 +5,7 @@ import json
 # Configuration file
 with open('config.json') as f:
 	CONFIG = json.load(f)
-port = CONFIG['http_port']
+port = CONFIG.get('http_port', 80)
 
 # Data collection
 observations = Observations()

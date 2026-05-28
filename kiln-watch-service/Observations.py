@@ -11,7 +11,7 @@ from Record import Record
 with open('config.json') as f:
 	CONFIG = json.load(f)
 
-port = CONFIG['udp_port']
+port = CONFIG.get('udp_port', 23464)
 
 
 def threaded(fn):

@@ -1,7 +1,6 @@
 import math
 import _thread
 import time
-#import copy
 
 
 class Record:
@@ -110,7 +109,8 @@ class Record:
 
 		with self._lock:
 
-			copy_of_reports = self._reports # copy.deepcopy(self._reports)
+			# Make a shallow copy of reports
+			copy_of_reports = self._reports[:]
 
 			current_time_minutes = int(math.floor(time.time()) / 60)
 
@@ -122,16 +122,17 @@ class Record:
 
 			for index in range(0, len(copy_of_reports)):
 				cumulative_temperature, nreports = copy_of_reports[index]
+
+				time_late = -float(len(copy_of_reports) - 1 - index) / 60.0
+				# Truncate precision (decimal places)
+				time_late = round(time_late, 4)
+
 				if nreports > 0:
 
 					# Temperature in Fahrenheit
 					temperature = int(float(cumulative_temperature / float(nreports) * 9.0 / 5.0) + 32.0)
-					time_late = -float(len(copy_of_reports) - 1 - index) / 60.0
 					if time_late == -0:
 						time_late = 0
-
-					# Truncate precision (decimal places)
-					time_late = round(time_late, 4)
 
 					# Temperature report
 					reports.append({

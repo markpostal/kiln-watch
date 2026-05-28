@@ -9,7 +9,7 @@ function RampChart(width, height, debug) {
         left: 80
     };
     const XRANGE = 12;
-    const YRANGE = 300;
+    const YRANGE = 500;
     const PREFIX = "r_";
 
     const xScale = d3.scaleLinear()
@@ -72,7 +72,7 @@ function RampChart(width, height, debug) {
         svg.append("g").call(yAxisLeft);
         svg.append('text')
             .attr('class', 'axis-label')
-            .text('Rate of Change')
+            .text('Rate of Change (Δ°F/Hr)')
             .attr('transform', 'rotate(-90)')
             .attr('x', -(MARGINS.top + (HEIGHT - MARGINS.top - MARGINS.bottom) / 2))
             .attr('y', MARGINS.left / 4)

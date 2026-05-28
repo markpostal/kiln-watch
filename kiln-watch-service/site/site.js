@@ -1,18 +1,18 @@
 const STROKE = [
     "green",
-    "red"
     "blue",
+    "firebrick",
     "mediumvioletred",
     "olivedrab",
     "steelblue",
-    "firebrick",
+    "red"
 ];
 
 const DASH = [
     "none",
-    "5,5",
-    "10,10",
-    "5,10,5"
+    "1,1",
+    "3,1",
+    "5,1"
 ];
 function TemperatureChart(width, height, debug) {
     const DEBUG = debug | false;
@@ -188,7 +188,7 @@ function TemperatureChart(width, height, debug) {
         left: 80
     };
     const XRANGE = 12;
-    const YRANGE = 300;
+    const YRANGE = 500;
     const PREFIX = "r_";
 
     const xScale = d3.scaleLinear()
@@ -251,7 +251,7 @@ function TemperatureChart(width, height, debug) {
         svg.append("g").call(yAxisLeft);
         svg.append('text')
             .attr('class', 'axis-label')
-            .text('Rate of Change')
+            .text('Rate of Change (Δ°F/Hr)')
             .attr('transform', 'rotate(-90)')
             .attr('x', -(MARGINS.top + (HEIGHT - MARGINS.top - MARGINS.bottom) / 2))
             .attr('y', MARGINS.left / 4)
@@ -340,7 +340,8 @@ function TemperatureChart(width, height, debug) {
 
     }
 
-}function Legend(width, debug) {
+}
+function Legend(width, debug) {
     const DEBUG = debug | false;
     const WIDTH = width;
     const MARGINS = {
