@@ -16,9 +16,7 @@ HEAPSIZE=2097152
 #EAPSIZE=1048576
 #HEAPSIZE=262144
 
-#CONFIG=../config.json
-CONFIG=../old/config.json-mark-green
-#CONFIG=../old/config.json-jim-red
+CONFIG=../config.json
 
 MICRODOT=https://raw.githubusercontent.com/miguelgrinberg/microdot/refs/heads/main/src/microdot/microdot.py
 

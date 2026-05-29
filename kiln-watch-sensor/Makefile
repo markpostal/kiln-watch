@@ -11,11 +11,7 @@ ESPTOOL=esptool
 RSHELL=rshell -p $(PORT) -b $(BAUD)
 PARTITION=/pyboard
 
-#CONFIG=../config.json
-#CONFIG=../old/config.json-jim-red
-#CONFIG=../old/config.json-jim-blue
-#CONFIG=../old/config.json-mark-red
-CONFIG=../old/config.json-mark-green
+CONFIG=../config.json
 
 all: flash copy
 

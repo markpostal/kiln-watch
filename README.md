@@ -21,21 +21,47 @@ Monitor a gas fired kiln at multiple kiln positions to better assess the progres
 ## Constraints
 
 - The project members each have differing levels of skills, yet the solution must at lest be maintainable by the least capable team member.  As such, simplicity and re-use of existing capabilities are of utmost importance.
+## Solution Overview
+
+![](images/overview.drawio.png)
+
+The solution consists of three parts:
+
+- kiln-watch-service
+	- Connected to the WiFi network and listens for UDP sensor reports and web browser requests.
+- kiln-watch-sensor
+	- Monitors temperatures via a thermocouple amplifier and broadcasts (UDP) temperature reports to the WiFi network.
+- web browser
+	- Connected to the WiFi network it requests a web page from the kiln-watch-service.
+## Software Prerequisites
+
+The following software packages are required to build and install the service and sensor:
+
+- [esptool](https://docs.espressif.com/projects/esptool/en/latest/esp32/installation.html)
+- [pyboard-rshell](https://github.com/dhylands/rshell)
+
+Install esptool:
+
+~~~bash
+% pip install esptool
+~~~
+
+Install rshell:
+
+~~~bash
+% sudo apt install pyboard-rshell
+~~~
+
 ## Sensor
 
-The sensor is be constructed as per the [ESPHome](https://esphome.io) instructions:
-
-- [MAX31856 Thermocouple Temperature Sensor](https://esphome.io/components/sensor/max31856/)
-
-Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant, before moving on to a custom service or integration with ESP Home Assistant.
+The sensor is constructed from the following bill of materials and connected according to the wiring instructions.
 
 ### Bill of Materials
 
-- 1 x [ESP32 ESP-32S WiFi Development Board](https://www.amazon.com/DORHEA-Development-Microcontroller-NodeMCU-32S-ESP-WROOM-32/dp/B086MJGFVV/)
+- 1 x [ESP32 WROOM-32 Type-C CH340C Development Board](https://www.ebay.com/itm/226555722283)
 - 1 x [Thermocouple Amplifier MAX31856](https://www.adafruit.com/product/3263)
 - 1 x [Type K Thermocouple and wire](https://www.clay-king.com/product/geocorp-premium-8-type-k-thermocouple-with-block-and-wire/)
 - 1 x [Jumper Wires](https://www.adafruit.com/product/1951)
-- 1 x USB Power Bank
 
 ### ESP32 Pinout
 
@@ -65,14 +91,15 @@ Re-using ESPHome will allow the sensor to be tested first with ESPHome Assistant
 
 ![](images/wired_up.jpg)
 
-For the final configuration the breakout boards were mounted on a piece of protoboard and wire wrapped.
+For the final configuration a custom circuit board was created to improve durability.
 
-![Protoboard](images/proto_board.jpg)
+![Protoboard](images/backplane.jpg)
 
-![Wire Wrap](images/wire_wrap.jpg)
 ### Install firmware
 
-The firmware for the ESP32 device will be created using [ESPHome](https://esphome.io/) and flashed to the device over USB.  So, first install ESPHome as follows.
+From the directory: kiln-watch-sensor
+
+The firmware for the ESP32 device is based on [micropython](https://micropython.org/)
 
 The instructions here are given for Ubuntu 22.04.5 LTS.
 
@@ -97,27 +124,23 @@ If the **dialout** group is not assigned to the user (john), added it:
 % newgrp dialout
 ```
 
-Install ESPHome:
+Edit the configuration file, [config.json](config.json).
+
+Specifically, edit the **ssid** and **wifi_password** to enable connection to your WiFi network.
 
 ```
-% python3 -m venv vesphome
-% source vesphome/bin/activate
-% pip3 install esphome
+{
+	"ssid" : "your_ssid_here",
+	"wifi_password" : "your_wifi_password_here",
+	"name" : "kiln_watch",
+	"index" : "0",
+	"http_port" : 80,
+	"udp_port" : 23464,
+	"hostname" : "kiln-watch-service"
+}
 ```
 
-Edit the configuration file, [kiln-watch.yaml](kiln-watch.yaml).
-
-Specifically, edit the substitutions section:
-
-```
-substitutions:
-  device_index: "0" # The device index, used to differentiate between devices
-  device_name: "kiln_watch_${device_index}"
-  ssid: "....."
-  wifi_passwd: "....."
-```
-
-The most important substitutions are **ssid** and **wifi_password**. Set these as required to log onto your local WiFi.
+For multiple sensors, the **index** and name **should** be unique for each sensor.
 
 Plug the ESP32 device into an available USB port and verify the device is created:
 
@@ -125,13 +148,23 @@ Plug the ESP32 device into an available USB port and verify the device is create
 % ls -la /dev/ttyUSB*
 ```
 
+Download the Micropython bin image from [https://micropython.org/download/ESP32_GENERIC/](https://micropython.org/download/ESP32_GENERIC/)
+Edit the Makefile to set the location of the Micropython image and the USB device:
+
+```
+IMAGE=../ESP32_GENERIC-20251209-v1.27.0.bin
+PORT=/dev/ttyUSB0
+```
+
 Compile and flash the firmware to the ESP32 device:
 
 ```
-% esphome upload kiln-watch.yaml
+% make
 ```
 
 ### Test the firmware installation
+
+Reboot the ESP32 device (press boot button, or disconnect and reconnect USB connection).
 
 At this point the ESP32 should be broadcasting messages every 10 seconds onto the local network over WiFi.  We can check this using the [udp_listen.py](udp_listen.py) script.  However, first we must check the status of the firewall on the local system.
 
@@ -164,75 +197,41 @@ The broadcast data is comma delimited with each position containing:
 |    0     | Always KW to identify the packet as a kiln-watch packet                       |
 |    1     | The device_name as specified in the [kiln-watch.yaml](kiln-watch.yaml) file.  |
 |    2     | The device_index as specified in the [kiln-watch.yaml](kiln-watch.yaml) file. |
-|    3     | The measured temperature in Celcius.                                          |
-
-## Service2
-
-The Kiln Watch Services runs on another ESP32 board, listens for client broadcasts, then presents a web site that presents the status of all clients.
-
-This service has the following software requirements:
-
-- [MicroPython](https://micropython.org/)
-- [esptool](https://docs.espressif.com/projects/esptool/en/latest/esp32/installation.html)
-- [pyboard-rshell](https://github.com/dhylands/rshell)
-- [Microdot](https://microdot.readthedocs.io/en/latest/)
-
-Install esptool:
-
-~~~bash
-% pip install esptool
-~~~
-
-Install rshell:
-
-~~~bash
-% sudo apt install pyboard-rshell
-~~~
-
-Download  the [MicroPython firmware](https://micropython.org/download/ESP32_GENERIC/)
-
-Install the firmware:
-
-~~~bash
-% esptool -p /dev/ttyUSB0 erase_flash
-% esptool -b 115200 -p /dev/ttyUSB0 -c esp32 write-flash 0x1000 ESP32_GENERIC-20251209-v1.27.0.bin
-~~~
+|    3     | The measured temperature in Celsius.                                          |
 
 ## Service
 
-The Kiln Watch Service is implemented as a web app that listens for sensor reports and web requests.  The service is implemented in python.
+The Kiln Watch Services runs on another ESP32 board, listens for client broadcasts, then presents a web site that presents the status of all clients.
 
-### Prerequisites
+### Bill of Materials
 
-The Kiln Watch Service is built using [Python Poetry](https://python-poetry.org/). Please see the [docs](https://python-poetry.org/docs/) for the installation procedures.
+- 1 x [Adafruit ESP32 Feather V2 - 8MB Flash + 2 MB PSRAM - STEMMA QT](https://www.adafruit.com/product/5400)
 
-### Run the Service
+### Install the firmware
 
-By default the service listens on port 4000.  If your firewall is up, add a rule to allow access to port 4000.
+From the kiln-watch-service directory:
 
-```bash
-% sudo ufw allow 4000/tcp
+Download the Micropython SPIRAM bin image from [https://micropython.org/download/ESP32_GENERIC/](https://micropython.org/download/ESP32_GENERIC/)
+
+Edit the Makefile to set the location of the Micropython image and the USB device:
+
+```
+IMAGE=../ESP32_GENERIC-SPIRAM-20251209-v1.27.0.bin
+PORT=/dev/ttyACM0
 ```
 
+Compile and flash the firmware to the ESP32 device:
 
-```bash
-% poetry run kwserv
-
- * Serving Flask app 'kiln_watch_service.Service'
- * Debug mode: off
-INFO:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:4000
- * Running on http://192.168.1.194:4000
- * 
+```
+% make
 ```
 
-### View the application
+## Application View
 
-When the service runs, it lists the URLs on which the application is available.   Open one of these URLs with a web browser to reveal the application.
+When the service device is turned on, it connects to the local WiFi and exposes a web application at the following URL:
 
 ```bash
-% firefox http://192.168.1.194:4000
+% firefox http://kiln-watch-service.local
 ```
 
 The application contains a single page with the following three sections:
